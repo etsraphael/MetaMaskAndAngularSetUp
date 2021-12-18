@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import Web3 from 'web3'
+import Web3 from 'web3';
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -7,17 +8,47 @@ import Web3 from 'web3'
 })
 export class AppComponent implements OnInit {
   title = 'angular-tour-of-heroes';
+  web3: Web3 | any;
+
+  constructor() {
+    this.checkIfWeb3IsInstalled();
+  }
 
   ngOnInit(): void {
+    this.getAccount();
+    this.login();
+  }
 
-    console.log(Web3)
+  login(): void {
+    // console.log('my value : ');
+    // console.log(this.web3.ethereum.isMetaMask);
 
-    // if (typeof window.ethereum !== 'undefined') {
-    //   console.log(window.ethereum)
-    //   console.log('MetaMask is installed!');
-    // }
 
-    // let web3 = new Web3(Web3.givenProvider || "ws://localhost:8545");
-    // console.log(web3);
+    if(window.ethereum.isMetaMask) {
+      window.ethereum.request({ method: 'eth_requestAccounts' })
+      .then((response: any) => {
+        console.log(response);
+        console.log('requested accounts');
+      })
+      .catch(() => {console.log('requested accounts error')});
+    }
+  }
+
+  getAccount(): void {
+    // this.web3.eth.getAccounts().then(console.log);
+  }
+
+  checkIfWeb3IsInstalled(): void {
+    if (typeof window !== 'undefined' && typeof window.web3 !== 'undefined') {
+      // Use web3 provider
+      this.web3 = new Web3(window.web3.currentProvider);
+    } else {
+      console.log('No web3? You should consider trying MetaMask!');
+      // Hack to provide backwards compatibility for Truffle, which uses web3js 0.20.x
+      Web3.providers.HttpProvider.prototype.sendAsync =
+        Web3.providers.HttpProvider.prototype.send;
+      // fallback - use your fallback strategy (local node / hosted node + in-dapp id mgmt / fail)
+      this.web3 = new Web3(new Web3.providers.HttpProvider(Web3.givenProvider));
+    }
   }
 }
