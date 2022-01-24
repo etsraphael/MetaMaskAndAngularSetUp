@@ -17,6 +17,7 @@ export class AppComponent implements OnInit {
     this.web3 = this.web3Service.checkIfWeb3IsInstalled();
     this.getAccount();
     this.listener();
+    // console.log(this.web3.eth)
   }
 
   login(): void {
@@ -35,6 +36,7 @@ export class AppComponent implements OnInit {
   getAccount(): void {
     this.web3.eth.getAccounts().then(
       (response: string[]) => {
+        console.log(response);
         this.accountConnected = response[0];
       },
       () => {
