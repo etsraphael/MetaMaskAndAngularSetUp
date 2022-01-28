@@ -11,3 +11,5 @@
 <div *ngIf="!!accountConnected">
   <span>Account connected: {{accountConnected}}</span>
 </div>
+
+<input id="upload_picture" #picture type="file" accept='image/* | video/*' (change)="uploadFile(picture.files)" />
