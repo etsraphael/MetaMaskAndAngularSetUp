@@ -36,13 +36,18 @@ export class AppComponent implements OnInit {
   getAccount(): void {
     this.web3.eth.getAccounts().then(
       (response: string[]) => {
-        console.log(response);
         this.accountConnected = response[0];
       },
       () => {
         console.log('get accounts error');
       }
     );
+
+    // const web3 = new Web3(provider);
+    this.web3.eth.getBalance('0xB790F2178D35f244D9EecF1130496309eAE063be', (err: any, balance: any) => {
+      console.log('boum : ')
+      console.log(balance);
+    });
   }
 
   logout(): void {
