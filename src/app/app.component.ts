@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import Web3 from 'web3';
 import { Web3Service } from './core/service/web3/web3.service';
-import { Web3Storage, getFilesFromPath } from 'web3.storage'
+import { Web3Storage, getFilesFromPath, Web3Response } from 'web3.storage'
 import { StorageService } from './core/service/storage/storage.service';
 
 @Component({
@@ -23,7 +23,14 @@ export class AppComponent implements OnInit {
     // this.getAccount();
     this.listener();
     // console.log(this.web3.eth)
+
+    // this.getFileFromCid("bafybeia6ejf27xb5g5bg5tog6vurm3rrlx3jnxmrnbatfygh342zrfvzmm")
+
+
+    this.storageService.calltest("bafybeia6ejf27xb5g5bg5tog6vurm3rrlx3jnxmrnbatfygh342zrfvzmm")
   }
+
+
   
   login(): void {
     if (window.ethereum.isMetaMask) {
@@ -66,8 +73,23 @@ export class AppComponent implements OnInit {
     });
   }
 
-  uploadFile(filePath: any) {
-    this.storageService.sendFileToStorage(filePath)
+  uploadFile(filePath: any): Promise<string> {
+    return this.storageService.sendFileToStorage(filePath)
+  }
+
+  async getFileFromCid(cid: string): Promise<string> {
+    return this.storageService.getFileFromStorage(cid).then(
+      (response: Web3Response | null) => {
+        if (!response) {
+          console.log('failed ' + response);
+          return null!;
+        } else {
+          console.log('success ');
+          console.log(response)
+          return null!
+        }
+      }
+    )
   }
 
 }
