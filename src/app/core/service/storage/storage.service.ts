@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Filelike, Web3File, Web3Response, Web3Storage } from 'web3.storage';
+import { CIDString, Filelike, Web3File, Web3Response, Web3Storage } from 'web3.storage';
 
 @Injectable({
   providedIn: 'root',
@@ -12,28 +12,14 @@ export class StorageService {
 
   constructor() {}
 
-  async sendFileToStorage(filePath: Iterable<Filelike>): Promise<any> {
+  async sendFileToStorage(filePath: Iterable<Filelike>): Promise<string> {
     return this.client
       .put(filePath)
-      .then((cid) => {
-        console.log('stored files with cid:', cid);
-      })
-      .catch((error) => {
-        console.log('error');
-
-        console.log(error);
-      });
+      .then((cid: CIDString) => cid)
+      .catch((error: string) => error);
   }
 
   async getFileFromStorage(cid: string): Promise<Web3Response | null> {
-    // const response: Web3Response | null = await this.client.get(cid);
-
-    // if (!response) {
-    //   return null;
-    // } else {
-    //   return response;
-    // }
-
     const response = await this.client.get(cid);
     if (!response) {
       return null;
@@ -43,20 +29,8 @@ export class StorageService {
   }
 
   async calltest(cid: string): Promise<Web3File[]> {
-    // You can fetch data using any CID, even from IPFS Nodes or Gateway URLs!
     const res = await this.client.get(cid);
     const files = await res?.files()!;
-
-
-    return files
-
-    // for (const file of files) {
-    //   // console.log(`${file.cid}: ${file.name} (${file.size} bytes)`);
-
-    //   console.log(file)
-
-    //   // console.log(`https://${file.cid}.ipfs.dweb.link/${file.name}`)
-    //   // console.log("https://bafybeia6ejf27xb5g5bg5tog6vurm3rrlx3jnxmrnbatfygh342zrfvzmm.ipfs.dweb.link/photo-1643376093837-e34aa74a231b.jpeg")
-    // }
+    return files;
   }
 }

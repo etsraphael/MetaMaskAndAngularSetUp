@@ -29,25 +29,23 @@ export class AppComponent implements OnInit {
     // this.getFileFromCid("bafybeia6ejf27xb5g5bg5tog6vurm3rrlx3jnxmrnbatfygh342zrfvzmm")
 
 
-    this.storageService.calltest("bafybeiceem6wsxw6w77a6ohuzxho3jvc357utkwk5omi7g6eb5r5jhq4xq").then(
-      (response: Web3File[] | null) => {
-        if (!response) {
-          console.log('failed ' + response);
-          return null!;
-        } else {
-          console.log('success ');
-          console.log(response)
+    // this.storageService.calltest("bafybeiceem6wsxw6w77a6ohuzxho3jvc357utkwk5omi7g6eb5r5jhq4xq").then(
+    //   (response: Web3File[] | null) => {
+    //     if (!response) {
+    //       console.log('failed ' + response);
+    //       return null!;
+    //     } else {
+    //       console.log('success ');
+    //       console.log(response)
 
 
-          this.myLinkToShow = `https://${response[0].cid}.ipfs.dweb.link`;
-          return null!
-        }
-      }
-    )
+    //       this.myLinkToShow = `https://${response[0].cid}.ipfs.dweb.link`;
+    //       return null!
+    //     }
+    //   }
+    // )
   }
 
-
-  
   login(): void {
     if (window.ethereum.isMetaMask) {
       window.ethereum
@@ -89,8 +87,30 @@ export class AppComponent implements OnInit {
     });
   }
 
-  uploadFile(filePath: any): Promise<string> {
-    return this.storageService.sendFileToStorage(filePath)
+  uploadFile(filePath: any): void {
+    this.storageService.sendFileToStorage(filePath).then(
+      (response: string) => {
+        // this.myLinkToShow = `https://${response}.ipfs.dweb.link`;
+
+        this.storageService.calltest(response).then(
+          (response: Web3File[] | null) => {
+            if (!response) {
+              console.log('failed ' + response);
+              return null!;
+            } else {
+              console.log('success ');
+              console.log(response)
+    
+    
+              this.myLinkToShow = `https://${response[0].cid}.ipfs.dweb.link`;
+              return null!
+            }
+          }
+        )
+
+
+      }
+    )
   }
 
   async getFileFromCid(cid: string): Promise<string> {
