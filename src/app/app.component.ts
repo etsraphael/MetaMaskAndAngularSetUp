@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import Web3 from 'web3';
 import { Web3Service } from './core/service/web3/web3.service';
-import { Web3Storage, getFilesFromPath, Web3Response } from 'web3.storage'
+import { Web3Storage, getFilesFromPath, Web3Response, Web3File } from 'web3.storage'
 import { StorageService } from './core/service/storage/storage.service';
 
 @Component({
@@ -12,6 +12,8 @@ import { StorageService } from './core/service/storage/storage.service';
 export class AppComponent implements OnInit {
   web3: Web3 = null!;
   accountConnected: string = null!;
+
+  myLinkToShow: string = null!;
 
   constructor(
     private web3Service: Web3Service,
@@ -27,7 +29,21 @@ export class AppComponent implements OnInit {
     // this.getFileFromCid("bafybeia6ejf27xb5g5bg5tog6vurm3rrlx3jnxmrnbatfygh342zrfvzmm")
 
 
-    this.storageService.calltest("bafybeia6ejf27xb5g5bg5tog6vurm3rrlx3jnxmrnbatfygh342zrfvzmm")
+    this.storageService.calltest("bafybeiceem6wsxw6w77a6ohuzxho3jvc357utkwk5omi7g6eb5r5jhq4xq").then(
+      (response: Web3File[] | null) => {
+        if (!response) {
+          console.log('failed ' + response);
+          return null!;
+        } else {
+          console.log('success ');
+          console.log(response)
+
+
+          this.myLinkToShow = `https://${response[0].cid}.ipfs.dweb.link`;
+          return null!
+        }
+      }
+    )
   }
 
 
