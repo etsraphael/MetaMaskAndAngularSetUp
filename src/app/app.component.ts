@@ -10,9 +10,6 @@ import { StorageService } from './core/service/storage/storage.service';
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnInit {
-  web3: Web3 = null!;
-  accountConnected: string = null!;
-
   myLinkToShow: string = null!;
 
   constructor(
@@ -20,53 +17,8 @@ export class AppComponent implements OnInit {
     private storageService: StorageService
   ) {}
 
-  ngOnInit(): void {
-    this.web3 = this.web3Service.checkIfWeb3IsInstalled();
-    // this.getAccount();
-    this.listener();
-    // console.log(this.web3.eth)
-  }
+  ngOnInit(): void { }
 
-  login(): void {
-    if (window.ethereum.isMetaMask) {
-      window.ethereum
-        .request({ method: 'eth_requestAccounts' })
-        .then(() => {
-          this.getAccount();
-        })
-        .catch(() => {
-          console.log('requested accounts error');
-        });
-    }
-  }
-
-  getAccount(): void {
-    this.web3.eth.getAccounts().then(
-      (response: string[]) => {
-        this.accountConnected = response[0];
-      },
-      () => {
-        console.log('get accounts error');
-      }
-    );
-
-    // const web3 = new Web3(provider);
-    this.web3.eth.getBalance('0xB790F2178D35f244D9EecF1130496309eAE063be', (err: any, balance: any) => {
-      console.log('boum : ')
-      console.log(balance);
-    });
-  }
-
-  logout(): void {
-    this.accountConnected = null!;
-  }
-
-  listener() {
-    window.ethereum.on('accountsChanged', async () => {
-      // Do something
-      alert('accounts changed');
-    });
-  }
 
   uploadFile(filePath: any): void {
     this.storageService.sendFileToStorage(filePath).then(
