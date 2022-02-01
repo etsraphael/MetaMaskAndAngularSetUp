@@ -1,5 +1,11 @@
 import { Injectable } from '@angular/core';
-import { CIDString, Filelike, Web3File, Web3Response, Web3Storage } from 'web3.storage';
+import {
+  CIDString,
+  Filelike,
+  Web3File,
+  Web3Response,
+  Web3Storage,
+} from 'web3.storage';
 
 @Injectable({
   providedIn: 'root',
@@ -17,6 +23,31 @@ export class StorageService {
       .put(filePath)
       .then((cid: CIDString) => cid)
       .catch((error: string) => error);
+  }
+
+  async sendFileToStorageWithProgress(files: File[]) {
+    // show the root cid as soon as it's ready
+    const onRootCidReady = (cid: string) => {
+      console.log('uploading files with cid:', cid);
+    };
+
+    // when each chunk is stored, update the percentage complete and display
+    let totalSize: number = 0;
+    let uploaded: number = 0;
+
+    for (let item of files) {
+      totalSize += item.size;
+    }
+
+    const onStoredChunk = (size: number) => {
+      uploaded += size;
+      const pct = (uploaded / totalSize) * 100;
+      console.log(`${Math.round(pct)}%`);
+    };
+
+    // client.put will invoke our callbacks during the upload
+    // and return the root cid when the upload completes
+    return this.client.put(files, { onRootCidReady, onStoredChunk });
   }
 
   async getFileFromStorage(cid: string): Promise<Web3Response | null> {

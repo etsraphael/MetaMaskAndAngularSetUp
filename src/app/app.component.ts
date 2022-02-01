@@ -25,25 +25,6 @@ export class AppComponent implements OnInit {
     // this.getAccount();
     this.listener();
     // console.log(this.web3.eth)
-
-    // this.getFileFromCid("bafybeia6ejf27xb5g5bg5tog6vurm3rrlx3jnxmrnbatfygh342zrfvzmm")
-
-
-    // this.storageService.calltest("bafybeiceem6wsxw6w77a6ohuzxho3jvc357utkwk5omi7g6eb5r5jhq4xq").then(
-    //   (response: Web3File[] | null) => {
-    //     if (!response) {
-    //       console.log('failed ' + response);
-    //       return null!;
-    //     } else {
-    //       console.log('success ');
-    //       console.log(response)
-
-
-    //       this.myLinkToShow = `https://${response[0].cid}.ipfs.dweb.link`;
-    //       return null!
-    //     }
-    //   }
-    // )
   }
 
   login(): void {
@@ -111,6 +92,11 @@ export class AppComponent implements OnInit {
 
       }
     )
+  }
+
+
+  uploadFileWithProgress(files: any): void {
+    this.storageService.sendFileToStorageWithProgress(files)
   }
 
   async getFileFromCid(cid: string): Promise<string> {
