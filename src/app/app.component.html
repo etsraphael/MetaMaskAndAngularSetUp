@@ -1,4 +1,4 @@
-<button (click)="login()" *ngIf="!accountConnected">
+<!-- <button (click)="login()" *ngIf="!accountConnected">
   <span>Connect</span>
 </button>
 
@@ -14,8 +14,7 @@
 
 <input id="upload_picture" #picture type="file" accept='image/* | video/*' multiple (change)="uploadFileWithProgress(picture.files)" />
 
-<!-- <img class="myImg" src="https://bafybeifu5oxmybax6muuvbm7erb2r4iz2fbtqvwsgaytted3griowln4u4.ipfs.dweb.link/kristin-wilson-z3htkdHUh5w-unsplash.jpg" alt=""> -->
-
 <div *ngIf="!!myLinkToShow">
   <img class="myImg"  [src]="myLinkToShow" alt="">
-</div>
+</div> -->
+<router-outlet></router-outlet>
