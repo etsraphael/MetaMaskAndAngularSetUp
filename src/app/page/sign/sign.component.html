@@ -1,11 +1,3 @@
-<button (click)="login()" *ngIf="!accountConnected">
+<button (click)="login()">
   <span>Connect</span>
 </button>
-
-<button (click)="logout()" *ngIf="!!accountConnected">
-  <span>Logout</span>
-</button>
-
-<div *ngIf="!!accountConnected">
-  <span>Account connected: {{accountConnected}}</span>
-</div>
