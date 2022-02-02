@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { AuthService } from 'src/app/core/service/auth/auth.service';
 import { Web3Service } from 'src/app/core/service/web3/web3.service';
 import Web3 from 'web3';
 
@@ -14,49 +15,27 @@ export class SignComponent implements OnInit {
 
   constructor(
     private web3Service: Web3Service,
-    private router: Router
+    private router: Router,
+    private authService: AuthService
   ) {}
 
   ngOnInit(): void {
     this.web3 = this.web3Service.checkIfWeb3IsInstalled();
     this.listener();
 
-
-    // console.log(localStorage.getItem('myProfileAddress'))
-
-    
-    // console.log(this.web3.eth)
-    // this.getAccount();
-
-
-    this.web3.eth.getAccounts().then(
-      (response: string[]) => {
-        console.log('account connected : ');
-        console.log(response)
+    this.authService.getAccountConnected().then(
+      (response: string) => {
+        console.log('my account');
+        console.log(response);
       },
       () => {
-        console.log('get accounts error');
+        console.log('get account error');
       }
     );
-
-
   }
 
   login(): void {
-    if (window.ethereum.isMetaMask) {
-      window.ethereum
-        .request({ method: 'eth_requestAccounts' })
-        .then((response: string[]) => {
-
-          localStorage.setItem('myProfileAddress', response[0]);
-
-          this.router.navigate(['/home'])
-          // this.getAccount();
-        })
-        .catch(() => {
-          console.log('requested accounts error');
-        });
-    }
+    return this.authService.login();
   }
 
   getAccount(): void {
@@ -66,15 +45,6 @@ export class SignComponent implements OnInit {
       },
       () => {
         console.log('get accounts error');
-      }
-    );
-
-    // const web3 = new Web3(provider);
-    this.web3.eth.getBalance(
-      '0xB790F2178D35f244D9EecF1130496309eAE063be',
-      (err: any, balance: any) => {
-        console.log('boum : ');
-        console.log(balance);
       }
     );
   }
