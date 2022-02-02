@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { Web3Service } from 'src/app/core/service/web3/web3.service';
 import Web3 from 'web3';
 
@@ -11,21 +12,46 @@ export class SignComponent implements OnInit {
   web3: Web3 = null!;
   accountConnected: string = null!;
 
-  constructor(private web3Service: Web3Service) {}
+  constructor(
+    private web3Service: Web3Service,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     this.web3 = this.web3Service.checkIfWeb3IsInstalled();
     this.listener();
+
+
+    // console.log(localStorage.getItem('myProfileAddress'))
+
+    
     // console.log(this.web3.eth)
     // this.getAccount();
+
+
+    this.web3.eth.getAccounts().then(
+      (response: string[]) => {
+        console.log('account connected : ');
+        console.log(response)
+      },
+      () => {
+        console.log('get accounts error');
+      }
+    );
+
+
   }
 
   login(): void {
     if (window.ethereum.isMetaMask) {
       window.ethereum
         .request({ method: 'eth_requestAccounts' })
-        .then(() => {
-          this.getAccount();
+        .then((response: string[]) => {
+
+          localStorage.setItem('myProfileAddress', response[0]);
+
+          this.router.navigate(['/home'])
+          // this.getAccount();
         })
         .catch(() => {
           console.log('requested accounts error');
