@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 import { AuthService } from 'src/app/core/service/auth/auth.service';
 import { Web3Service } from 'src/app/core/service/web3/web3.service';
 
@@ -9,10 +8,8 @@ import { Web3Service } from 'src/app/core/service/web3/web3.service';
   styleUrls: ['./sign.component.scss'],
 })
 export class SignComponent implements OnInit {
-
   constructor(
     private web3Service: Web3Service,
-    private router: Router,
     private authService: AuthService
   ) {}
 
