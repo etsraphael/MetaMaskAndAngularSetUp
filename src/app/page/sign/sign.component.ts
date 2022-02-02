@@ -21,17 +21,7 @@ export class SignComponent implements OnInit {
 
   ngOnInit(): void {
     this.web3 = this.web3Service.checkIfWeb3IsInstalled();
-    this.listener();
-
-    this.authService.getAccountConnected().then(
-      (response: string) => {
-        console.log('my account');
-        console.log(response);
-      },
-      () => {
-        console.log('get account error');
-      }
-    );
+    this.getAccount()
   }
 
   login(): void {
@@ -53,10 +43,5 @@ export class SignComponent implements OnInit {
     this.accountConnected = null!;
   }
 
-  listener() {
-    window.ethereum.on('accountsChanged', async () => {
-      // Do something
-      alert('accounts changed');
-    });
-  }
+
 }

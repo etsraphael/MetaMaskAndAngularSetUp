@@ -43,4 +43,11 @@ export class AuthService {
         });
     }
   }
+
+  authListener() {
+    window.ethereum.on('accountsChanged', async () => {
+      // Do something
+      alert('accounts changed');
+    });
+  }
 }
